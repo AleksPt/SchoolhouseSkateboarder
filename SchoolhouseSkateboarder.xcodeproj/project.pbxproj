@@ -15,6 +15,7 @@
 		FA7FFB7A2ACC76E900A8FF21 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA7FFB782ACC76E900A8FF21 /* Main.storyboard */; };
 		FA7FFB7C2ACC76EA00A8FF21 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA7FFB7B2ACC76EA00A8FF21 /* Assets.xcassets */; };
 		FA7FFB7F2ACC76EA00A8FF21 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA7FFB7D2ACC76EA00A8FF21 /* LaunchScreen.storyboard */; };
+		FA7FFB862ACD80EA00A8FF21 /* Skater.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7FFB852ACD80EA00A8FF21 /* Skater.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,7 @@
 		FA7FFB792ACC76E900A8FF21 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FA7FFB7B2ACC76EA00A8FF21 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FA7FFB7E2ACC76EA00A8FF21 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		FA7FFB852ACD80EA00A8FF21 /* Skater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skater.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,7 @@
 				FA7FFB782ACC76E900A8FF21 /* Main.storyboard */,
 				FA7FFB7B2ACC76EA00A8FF21 /* Assets.xcassets */,
 				FA7FFB7D2ACC76EA00A8FF21 /* LaunchScreen.storyboard */,
+				FA7FFB852ACD80EA00A8FF21 /* Skater.swift */,
 			);
 			path = SchoolhouseSkateboarder;
 			sourceTree = "<group>";
@@ -145,6 +148,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA7FFB752ACC76E900A8FF21 /* GameScene.swift in Sources */,
+				FA7FFB862ACD80EA00A8FF21 /* Skater.swift in Sources */,
 				FA7FFB772ACC76E900A8FF21 /* GameViewController.swift in Sources */,
 				FA7FFB6F2ACC76E900A8FF21 /* AppDelegate.swift in Sources */,
 			);
