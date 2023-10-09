@@ -11,6 +11,9 @@ class GameScene: SKScene {
     // настройка скорости движения направо для игры
     var scrollSpeed: CGFloat = 5.0
     
+    // константа для гравитации (как быстро объекты падают на землю)
+    let gravitySpeed: CGFloat = 1.5
+    
     // время последнего вызова для метода обновления
     var lastUpdateTime: TimeInterval?
     
@@ -31,6 +34,12 @@ class GameScene: SKScene {
         // настраиваем свойства скейтбордистки и добавляем ее в сцену 
         resetSkater()
         addChild(skater)
+        
+        // добавляем распознаватель нажатия, чтобы знать, когда пользователь нажимает на экран
+        let tapMethod = #selector(GameScene.handleTap(tapGesture:))
+        let tapGesture = UITapGestureRecognizer(target: self, action: tapMethod)
+        view.addGestureRecognizer(tapGesture)
+        
         }
         
     func resetSkater() {
@@ -107,6 +116,25 @@ class GameScene: SKScene {
         }
     }
     
+    func updateSkater() {
+        
+        if !skater.isOnGround {
+            
+            // устанавливаем новое значение скорости скейтбордистки с учетом влияния гравитации
+            let velocityY = skater.velocity.y - gravitySpeed
+            skater.velocity = CGPoint(x: skater.velocity.x, y: velocityY)
+            // устанавливаем новое положение скейтбордистки по оси y на основе ее скорости
+            let newSkaterY: CGFloat = skater.position.y + skater.velocity.y
+            skater.position = CGPoint(x: skater.position.x, y: newSkaterY)
+            // проверяем, приземлилась ли скейтбордистка
+            if skater.position.y < skater.minimumY {
+                skater.position.y = skater.minimumY
+                skater.velocity = CGPoint.zero
+                skater.isOnGround = true
+            }
+        }
+    }
+    
     // вызывается перед отрисовкой каждого кадра
     override func update(_ currentTime: TimeInterval) {
         
@@ -125,6 +153,22 @@ class GameScene: SKScene {
         let currentScrollAmount = scrollSpeed * scrollAdjustment
         
         updateBricks(withScrollAmount: currentScrollAmount)
+        
+        updateSkater()
 
     }
+    
+    @objc func handleTap(tapGesture: UITapGestureRecognizer) {
+        
+        // скейтбордистка прыгает, если игрок нажимает на экран, пока она находится на земле
+        if skater.isOnGround {
+            
+            // задаем для скейтбордистки скорость по оси y, равную ее изначальной скорости прыжка
+            skater.velocity = CGPoint(x: 0.0, y: skater.jumpSpeed)
+            
+            // отмечаем, что скейтбордистка уже не находится на земле
+            skater.isOnGround = false
+        }
+    }
+    
 }
