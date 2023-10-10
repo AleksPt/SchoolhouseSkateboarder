@@ -19,6 +19,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // массив, содержащий все текущие секции тротуара
     var bricks = [SKSpriteNode]()
     
+    // массив, содержащий все активные алмазы
+    var gems = [SKSpriteNode]()
+    
     // размер секций на тротуаре
     var brickSize = CGSize.zero
     
@@ -104,6 +107,30 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return brick
     }
     
+    func spawnGem(atPosition position: CGPoint) {
+        
+        // создаем спрайт для алмаза и добавляем его к сцене
+        let gem = SKSpriteNode(imageNamed: "gem")
+        gem.position = position
+        gem.zPosition = 9
+        addChild(gem)
+        gem.physicsBody = SKPhysicsBody(rectangleOf: gem.size, center: gem.centerRect.origin)
+        gem.physicsBody?.categoryBitMask = PhysicsCategory.gem
+        gem.physicsBody?.affectedByGravity = false
+        
+        // добавляем новый алмаз к массиву
+        gems.append(gem)
+    }
+    
+    func removeGem(_ gem: SKSpriteNode) {
+        
+        gem.removeFromParent()
+        
+        if let gemIndex = gems.firstIndex(of: gem) {
+            gems.remove(at: gemIndex)
+        }
+    }
+    
     func updateBricks(withScrollAmount currentScrollAmount: CGFloat) {
         
         // отслеживаем самое большое значение по оси x для всех существующих секций
@@ -142,6 +169,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 // 5-процентный шанс на то, что у нас возникнет разрыв между секциями
                 let gap = 20.0 * scrollSpeed
                 brickX += gap
+                
+                // на каждом разрыве добавляем алмаз
+                let randomGemYAmount = CGFloat(arc4random_uniform(150))
+                let newGemY = brickY + skater.size.height + randomGemYAmount
+                let newGemX = brickX - gap / 2.0
+                
+                spawnGem(atPosition: CGPoint(x: newGemX, y: newGemY))
             } else if randomNumber < 10 {
                 // в игре имеется 5-процентный шанс на изменение уровня секции
                 if brickLevel == .high {
@@ -154,6 +188,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             // добавляем новую секцию и обновляем положение самой правой
             let newBrick = spawnBrick(atPosition: CGPoint(x: brickX, y: brickY))
             farthestRightBrickX = newBrick.position.x
+        }
+    }
+    
+    func updateGem(withScrollAmount currentScrollAmount: CGFloat) {
+        
+        for gem in gems {
+            
+            // обновляем положение каждого алмаза
+            let thisGemX = gem.position.x - currentScrollAmount
+            gem.position = CGPoint(x: thisGemX, y: gem.position.y)
+            
+            // удаляем любые алмазы, ушедшие с экрана
+            if gem.position.x < 0.0 {
+                removeGem(gem)
+            }
         }
     }
     
@@ -190,6 +239,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             brick.removeFromParent()
         }
         bricks.removeAll(keepingCapacity: true)
+        
+        for gem in gems {
+            removeGem(gem)
+        }
     }
     
     func gameOver() {
@@ -219,6 +272,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         updateBricks(withScrollAmount: currentScrollAmount)
         
         updateSkater()
+        
+        updateGem(withScrollAmount: currentScrollAmount)
 
     }
     
@@ -236,6 +291,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // проверяем, есть ли контакт между скейтбордисткой и секцией
         if contact.bodyA.categoryBitMask == PhysicsCategory.skater && contact.bodyB.categoryBitMask == PhysicsCategory.brick {
             skater.isOnGround = true
+        } else if contact.bodyA.categoryBitMask == PhysicsCategory.skater && contact.bodyB.categoryBitMask == PhysicsCategory.gem {
+            
+            // скейтбордистка коснулась алмаза, поэтому мы его убираем
+            if let gem = contact.bodyB.node as? SKSpriteNode {
+                removeGem(gem)
+            }
         }
     }
     
