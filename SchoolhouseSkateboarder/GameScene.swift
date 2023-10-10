@@ -16,6 +16,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         case high = 100.0
     }
     
+    // этот enum определяет состояния, в которых может находиться игра
+    enum GameState {
+        case notRunning
+        case running
+    }
+    
     // массив, содержащий все текущие секции тротуара
     var bricks = [SKSpriteNode]()
     
@@ -27,6 +33,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // текущий уровень определяет положение по оси y для новых секций
     var brickLevel = BrickLevel.low
+    
+    // отслеживаем текущее состояние игры
+    var gameState = GameState.notRunning
     
     // настройка скорости движения направо для игры
     var scrollSpeed: CGFloat = 5.0
@@ -308,7 +317,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func startGame() {
         
-        // возвращение к начальным условиям при запуске новой игры
+        // перезагрузка начальных условий при запуске новой игры
+        gameState = .running
         resetSkater()
         
         score = 0
@@ -330,16 +340,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func gameOver() {
         
         // по завершении игры проверяем, добился ли игрок нового рекорда
+        
+        gameState = .notRunning
+        
         if score > highScore {
             highScore = score
             updateHighScoreLabelText()
         }
         
-        startGame()
     }
     
     // вызывается перед отрисовкой каждого кадра
     override func update(_ currentTime: TimeInterval) {
+        if gameState != .running {
+            return
+        }
         
         // медленно увеличиваем значение scrollSpeed по мере развития игры
         scrollSpeed += 0.01
