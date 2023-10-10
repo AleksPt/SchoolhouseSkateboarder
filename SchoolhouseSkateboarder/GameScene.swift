@@ -17,6 +17,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // настройка скорости движения направо для игры
     var scrollSpeed: CGFloat = 5.0
+    let startingScrollspeed: CGFloat = 5.0
     
     // константа для гравитации (как быстро объекты падают на землю)
     let gravitySpeed: CGFloat = 1.5
@@ -43,13 +44,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // настраиваем свойства скейтбордистки и добавляем ее в сцену 
         skater.setupPhysicBody()
-        resetSkater()
         addChild(skater)
         
         // добавляем распознаватель нажатия, чтобы знать, когда пользователь нажимает на экран
         let tapMethod = #selector(GameScene.handleTap(tapGesture:))
         let tapGesture = UITapGestureRecognizer(target: self, action: tapMethod)
         view.addGestureRecognizer(tapGesture)
+        
+        startGame()
         
         }
         
@@ -60,6 +62,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         skater.position = CGPoint(x: skaterX, y: skaterY)
         skater.zPosition = 10
         skater.minimumY = skaterY
+        
+        skater.zRotation = 0.0
+        skater.physicsBody?.velocity = CGVector(dx: 0.0, dy: 0.0)
+        skater.physicsBody?.angularVelocity = 0.0
         
     }
     
@@ -151,6 +157,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 skater.isOnGround = true
             }
         }
+    }
+    
+    func startGame() {
+        
+        // возвращение к начальным условиям при запуске новой игры
+        resetSkater()
+        
+        scrollSpeed = startingScrollspeed
+        lastUpdateTime = nil
+        
+        for brick in bricks {
+            brick.removeFromParent()
+        }
+        bricks.removeAll(keepingCapacity: true)
     }
     
     // вызывается перед отрисовкой каждого кадра
