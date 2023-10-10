@@ -1,6 +1,13 @@
 import SpriteKit
 
-class GameScene: SKScene {
+// эта структура содержит различные физические категории, и мы можем определить, какие типы объектов сталкиваются или контактируют друг с другом
+struct PhysicsCategory {
+    static let skater: UInt32 = 0x1 << 0
+    static let brick: UInt32 = 0x1 << 1
+    static let gem: UInt32 = 0x1 << 2
+}
+
+class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // массив, содержащий все текущие секции тротуара
     var bricks = [SKSpriteNode]()
@@ -22,6 +29,9 @@ class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
         
+        physicsWorld.gravity = CGVector(dx: 0.0, dy: -6.0)
+        physicsWorld.contactDelegate = self
+        
         anchorPoint = CGPoint.zero
         
         // добавляем фоновое изображение
@@ -32,6 +42,7 @@ class GameScene: SKScene {
         addChild(background)
         
         // настраиваем свойства скейтбордистки и добавляем ее в сцену 
+        skater.setupPhysicBody()
         resetSkater()
         addChild(skater)
         
@@ -66,6 +77,13 @@ class GameScene: SKScene {
         // добавляем новую секцию к массиву
         bricks.append(brick)
         
+        // настройка физического тела секции
+        let center = brick.centerRect.origin
+        brick.physicsBody = SKPhysicsBody(rectangleOf: brickSize, center: center)
+        brick.physicsBody?.affectedByGravity = false
+        brick.physicsBody?.categoryBitMask = PhysicsCategory.brick
+        brick.physicsBody?.collisionBitMask = 0
+        
         // возвращаем новую секцию вызывающему коду
         return brick
     }
@@ -73,7 +91,7 @@ class GameScene: SKScene {
     func updateBricks(withScrollAmount currentScrollAmount: CGFloat) {
         
         // отслеживаем самое большое значение по оси x для всех существующих секций
-        var farthestRightBrickX: CGFloat = 0.0
+        var farthestRightBrickX: CGFloat = 0
         
         for brick in bricks {
             let newX = brick.position.x - currentScrollAmount
@@ -163,11 +181,15 @@ class GameScene: SKScene {
         // скейтбордистка прыгает, если игрок нажимает на экран, пока она находится на земле
         if skater.isOnGround {
             
-            // задаем для скейтбордистки скорость по оси y, равную ее изначальной скорости прыжка
-            skater.velocity = CGPoint(x: 0.0, y: skater.jumpSpeed)
-            
-            // отмечаем, что скейтбордистка уже не находится на земле
-            skater.isOnGround = false
+            skater.physicsBody?.applyImpulse(CGVector(dx: 0.0, dy: 260.0))
+        }
+    }
+    
+    // MARK: - SKPhysicsContactDelegate Methods
+    func didBegin(_ contact: SKPhysicsContact) {
+        // проверяем, есть ли контакт между скейтбордисткой и секцией
+        if contact.bodyA.categoryBitMask == PhysicsCategory.skater && contact.bodyB.categoryBitMask == PhysicsCategory.brick {
+            skater.isOnGround = true
         }
     }
     
