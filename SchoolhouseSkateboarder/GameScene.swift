@@ -142,20 +142,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func updateSkater() {
         
-        if !skater.isOnGround {
-            
-            // устанавливаем новое значение скорости скейтбордистки с учетом влияния гравитации
-            let velocityY = skater.velocity.y - gravitySpeed
-            skater.velocity = CGPoint(x: skater.velocity.x, y: velocityY)
-            // устанавливаем новое положение скейтбордистки по оси y на основе ее скорости
-            let newSkaterY: CGFloat = skater.position.y + skater.velocity.y
-            skater.position = CGPoint(x: skater.position.x, y: newSkaterY)
-            // проверяем, приземлилась ли скейтбордистка
-            if skater.position.y < skater.minimumY {
-                skater.position.y = skater.minimumY
-                skater.velocity = CGPoint.zero
-                skater.isOnGround = true
+        // определяем, находится ли скейтбордистка на земле
+        if let velocityY = skater.physicsBody?.velocity.dy {
+            if velocityY < -100.0 || velocityY > 100.0 {
+                skater.isOnGround = false
             }
+        }
+        
+        // проверяем, должна ли игра закончится
+        let isOffScreen = skater.position.y < 0.0 || skater.position.x < 0.0
+        
+        let maxRotation = CGFloat(GLKMathDegreesToRadians(85.0))
+        let isTippedOver = skater.zRotation > maxRotation || skater.zRotation < -maxRotation
+        
+        if isOffScreen || isTippedOver {
+            gameOver()
         }
     }
     
@@ -171,6 +172,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             brick.removeFromParent()
         }
         bricks.removeAll(keepingCapacity: true)
+    }
+    
+    func gameOver() {
+        startGame()
     }
     
     // вызывается перед отрисовкой каждого кадра
