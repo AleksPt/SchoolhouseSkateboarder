@@ -224,9 +224,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             // время от времени мы оставляем разрывы, через которые герой должен перепрыгнуть
             let randomNumber = arc4random_uniform(99)
             
-            if randomNumber < 5 {
+            if randomNumber < 5 && score > 5 {
                 
-                // 5-процентный шанс на то, что у нас возникнет разрыв между секциями
+                // шанс на то, что у нас возникнет разрыв между секциями после того, как игрок набрал 10 очков
                 let gap = 20.0 * scrollSpeed
                 brickX += gap
                 
@@ -237,8 +237,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 
                 spawnGem(atPosition: CGPoint(x: newGemX, y: newGemY))
             } 
-            else if randomNumber < 10 {
-                // в игре имеется 5-процентный шанс на изменение уровня секции
+            else if randomNumber < 10 && score > 10 {
+                // шанс на изменение уровня секции Y после того, как игрок набрал 20 очков
                 if brickLevel == .high {
                     brickLevel = .low
                 } else if brickLevel == .low {
