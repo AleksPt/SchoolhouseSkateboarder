@@ -9,11 +9,21 @@ struct PhysicsCategory {
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
+    // enum для положения секции по оси y
+    // секции на земле низкие, а секции на верхней платформе высокие
+    enum BrickLevel: CGFloat {
+        case low = 0.0
+        case high = 100.0
+    }
+    
     // массив, содержащий все текущие секции тротуара
     var bricks = [SKSpriteNode]()
     
     // размер секций на тротуаре
     var brickSize = CGSize.zero
+    
+    // текущий уровень определяет положение по оси y для новых секций
+    var brickLevel = BrickLevel.low
     
     // настройка скорости движения направо для игры
     var scrollSpeed: CGFloat = 5.0
@@ -123,7 +133,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // цикл while, обеспечивающий постоянное наполнение экрана секциями
         while farthestRightBrickX < frame.width {
             var brickX = farthestRightBrickX + brickSize.width + 1.0
-            let brickY = brickSize.height / 2.0
+            let brickY = (brickSize.height / 2.0) + brickLevel.rawValue
             // время от времени мы оставляем разрывы, через которые герой должен перепрыгнуть
             let randomNumber = arc4random_uniform(99)
             
@@ -132,6 +142,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 // 5-процентный шанс на то, что у нас возникнет разрыв между секциями
                 let gap = 20.0 * scrollSpeed
                 brickX += gap
+            } else if randomNumber < 10 {
+                // в игре имеется 5-процентный шанс на изменение уровня секции
+                if brickLevel == .high {
+                    brickLevel = .low
+                } else if brickLevel == .low {
+                    brickLevel = .high
+                }
             }
             
             // добавляем новую секцию и обновляем положение самой правой
@@ -166,6 +183,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         resetSkater()
         
         scrollSpeed = startingScrollspeed
+        brickLevel = .low
         lastUpdateTime = nil
         
         for brick in bricks {
@@ -180,6 +198,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // вызывается перед отрисовкой каждого кадра
     override func update(_ currentTime: TimeInterval) {
+        
+        // медленно увеличиваем значение scrollSpeed по мере развития игры
+        scrollSpeed += 0.01
         
         // определяем время, прошедшее с момента последнего вызова update
         var elapsedTime: TimeInterval = 0.0
