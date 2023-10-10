@@ -13,7 +13,7 @@ class Skater: SKSpriteNode {
             physicsBody?.isDynamic = true
             physicsBody?.density = 6.0
             physicsBody?.allowsRotation = true
-            physicsBody?.angularDamping = 1.0
+            physicsBody?.angularDamping = 4.0
             
             physicsBody?.categoryBitMask = PhysicsCategory.skater
             physicsBody?.collisionBitMask = PhysicsCategory.brick

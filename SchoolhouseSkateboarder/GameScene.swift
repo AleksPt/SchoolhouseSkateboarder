@@ -30,7 +30,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // настройка скорости движения направо для игры
     var scrollSpeed: CGFloat = 5.0
-    let startingScrollspeed: CGFloat = 5.0
+    let startingScrollSpeed: CGFloat = 5.0
     
     // константа для гравитации (как быстро объекты падают на землю)
     let gravitySpeed: CGFloat = 1.5
@@ -313,7 +313,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         score = 0
         
-        scrollSpeed = startingScrollspeed
+        scrollSpeed = startingScrollSpeed
         brickLevel = .low
         lastUpdateTime = nil
         
