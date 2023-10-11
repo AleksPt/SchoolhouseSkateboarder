@@ -407,6 +407,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             // скейтбордистка прыгает, если игрок нажимает на экран, пока она находится на земле
             if skater.isOnGround {
                 skater.physicsBody?.applyImpulse(CGVector(dx: 0.0, dy: 260.0))
+                run(SKAction.playSoundFileNamed("jump.wav", waitForCompletion: false))
             }
         } else {
             // если игра не запущена, нажатие на экран запускает новую игру
@@ -430,6 +431,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 // даем игроку 50 очков за собранный алмаз
                 score += 50
                 updateScoreLabelText()
+                
+                run(SKAction.playSoundFileNamed("gem.wav", waitForCompletion: false))
             }
         }
     }
