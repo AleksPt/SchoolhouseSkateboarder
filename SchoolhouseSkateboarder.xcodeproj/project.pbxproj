@@ -16,6 +16,7 @@
 		FA7FFB7C2ACC76EA00A8FF21 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA7FFB7B2ACC76EA00A8FF21 /* Assets.xcassets */; };
 		FA7FFB7F2ACC76EA00A8FF21 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA7FFB7D2ACC76EA00A8FF21 /* LaunchScreen.storyboard */; };
 		FA7FFB862ACD80EA00A8FF21 /* Skater.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7FFB852ACD80EA00A8FF21 /* Skater.swift */; };
+		FA7FFBC72AD5EB2200A8FF21 /* MenuLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7FFBC62AD5EB2200A8FF21 /* MenuLayer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		FA7FFB7B2ACC76EA00A8FF21 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FA7FFB7E2ACC76EA00A8FF21 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FA7FFB852ACD80EA00A8FF21 /* Skater.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Skater.swift; sourceTree = "<group>"; };
+		FA7FFBC62AD5EB2200A8FF21 /* MenuLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuLayer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +72,7 @@
 				FA7FFB7B2ACC76EA00A8FF21 /* Assets.xcassets */,
 				FA7FFB7D2ACC76EA00A8FF21 /* LaunchScreen.storyboard */,
 				FA7FFB852ACD80EA00A8FF21 /* Skater.swift */,
+				FA7FFBC62AD5EB2200A8FF21 /* MenuLayer.swift */,
 			);
 			path = SchoolhouseSkateboarder;
 			sourceTree = "<group>";
@@ -149,6 +152,7 @@
 			files = (
 				FA7FFB752ACC76E900A8FF21 /* GameScene.swift in Sources */,
 				FA7FFB862ACD80EA00A8FF21 /* Skater.swift in Sources */,
+				FA7FFBC72AD5EB2200A8FF21 /* MenuLayer.swift in Sources */,
 				FA7FFB772ACC76E900A8FF21 /* GameViewController.swift in Sources */,
 				FA7FFB6F2ACC76E900A8FF21 /* AppDelegate.swift in Sources */,
 			);

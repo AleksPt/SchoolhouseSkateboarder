@@ -71,7 +71,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         setupLabels()
         
-        // настраиваем свойства скейтбордистки и добавляем ее в сцену 
+        // настраиваем свойства скейтбордистки и добавляем ее в сцену
         skater.setupPhysicBody()
         addChild(skater)
         
@@ -80,10 +80,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let tapGesture = UITapGestureRecognizer(target: self, action: tapMethod)
         view.addGestureRecognizer(tapGesture)
         
-        startGame()
+        // добавляем слой меню с текстом "Нажмите, чтобы играть"
+        let menuBackgroundColor = UIColor.black.withAlphaComponent(0.4)
+        let menuLayer = MenuLayer(color: menuBackgroundColor, size: frame.size)
+        menuLayer.anchorPoint = CGPoint(x: 0.0, y: 0.0)
+        menuLayer.position = CGPoint(x: 0.0, y: 0.0)
+        menuLayer.zPosition = 30
+        menuLayer.name = "menuLayer"
+        menuLayer.display(message: "Нажмите, чтобы играть", score: nil)
+        addChild(menuLayer)
         
-        }
-        
+    }
+    
     func resetSkater() {
         // задаем начальное положение скейтбордистки, zPosition и minimumY
         let skaterX = frame.midX / 2.0
@@ -245,7 +253,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 let newGemX = brickX - gap / 2.0
                 
                 spawnGem(atPosition: CGPoint(x: newGemX, y: newGemY))
-            } 
+            }
             else if randomNumber < 10 && score > 10 {
                 // шанс на изменение уровня секции Y после того, как игрок набрал 20 очков
                 if brickLevel == .high {
@@ -348,6 +356,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             updateHighScoreLabelText()
         }
         
+        // показываем надпись "Игра окончена"
+        let menuBackgroundColor = UIColor.black.withAlphaComponent(0.4)
+        let menuLayer = MenuLayer(color: menuBackgroundColor, size: frame.size)
+        menuLayer.anchorPoint = CGPoint.zero
+        menuLayer.position = CGPoint.zero
+        menuLayer.zPosition = 30
+        menuLayer.name = "menuLayer"
+        menuLayer.display(message: "Игра окончена!", score: score)
+        addChild(menuLayer)
+        
     }
     
     // вызывается перед отрисовкой каждого кадра
@@ -380,15 +398,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         updateGem(withScrollAmount: currentScrollAmount)
         
         updateScore(withCurrentTime: currentTime)
-
+        
     }
     
     @objc func handleTap(tapGesture: UITapGestureRecognizer) {
         
-        // скейтбордистка прыгает, если игрок нажимает на экран, пока она находится на земле
-        if skater.isOnGround {
-            
-            skater.physicsBody?.applyImpulse(CGVector(dx: 0.0, dy: 260.0))
+        if gameState == .running {
+            // скейтбордистка прыгает, если игрок нажимает на экран, пока она находится на земле
+            if skater.isOnGround {
+                skater.physicsBody?.applyImpulse(CGVector(dx: 0.0, dy: 260.0))
+            }
+        } else {
+            // если игра не запущена, нажатие на экран запускает новую игру
+            if let menuLayer: SKSpriteNode = childNode(withName: "menuLayer") as? SKSpriteNode {
+                menuLayer.removeFromParent()
+            }
+            startGame()
         }
     }
     
@@ -410,3 +435,4 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
 }
+
