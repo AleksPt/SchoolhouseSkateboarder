@@ -19,6 +19,7 @@
 		FA7FFBC72AD5EB2200A8FF21 /* MenuLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7FFBC62AD5EB2200A8FF21 /* MenuLayer.swift */; };
 		FA96D90D2AD6C04F000997E6 /* jump.wav in Resources */ = {isa = PBXBuildFile; fileRef = FA96D90B2AD6C04E000997E6 /* jump.wav */; };
 		FA96D90E2AD6C04F000997E6 /* gem.wav in Resources */ = {isa = PBXBuildFile; fileRef = FA96D90C2AD6C04E000997E6 /* gem.wav */; };
+		FA96D9102AD6C227000997E6 /* sparks.sks in Resources */ = {isa = PBXBuildFile; fileRef = FA96D90F2AD6C227000997E6 /* sparks.sks */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,6 +36,7 @@
 		FA7FFBC62AD5EB2200A8FF21 /* MenuLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuLayer.swift; sourceTree = "<group>"; };
 		FA96D90B2AD6C04E000997E6 /* jump.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = jump.wav; sourceTree = "<group>"; };
 		FA96D90C2AD6C04E000997E6 /* gem.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = gem.wav; sourceTree = "<group>"; };
+		FA96D90F2AD6C227000997E6 /* sparks.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = sparks.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,7 @@
 		FA7FFB6D2ACC76E900A8FF21 /* SchoolhouseSkateboarder */ = {
 			isa = PBXGroup;
 			children = (
+				FA96D90A2AD6C028000997E6 /* Sounds */,
 				FA7FFB6E2ACC76E900A8FF21 /* AppDelegate.swift */,
 				FA7FFB702ACC76E900A8FF21 /* GameScene.sks */,
 				FA7FFB722ACC76E900A8FF21 /* Actions.sks */,
@@ -77,7 +80,7 @@
 				FA7FFB7D2ACC76EA00A8FF21 /* LaunchScreen.storyboard */,
 				FA7FFB852ACD80EA00A8FF21 /* Skater.swift */,
 				FA7FFBC62AD5EB2200A8FF21 /* MenuLayer.swift */,
-				FA96D90A2AD6C028000997E6 /* Sounds */,
+				FA96D90F2AD6C227000997E6 /* sparks.sks */,
 			);
 			path = SchoolhouseSkateboarder;
 			sourceTree = "<group>";
@@ -154,6 +157,7 @@
 				FA7FFB7A2ACC76E900A8FF21 /* Main.storyboard in Resources */,
 				FA7FFB712ACC76E900A8FF21 /* GameScene.sks in Resources */,
 				FA7FFB7C2ACC76EA00A8FF21 /* Assets.xcassets in Resources */,
+				FA96D9102AD6C227000997E6 /* sparks.sks in Resources */,
 				FA7FFB7F2ACC76EA00A8FF21 /* LaunchScreen.storyboard in Resources */,
 				FA7FFB732ACC76E900A8FF21 /* Actions.sks in Resources */,
 			);
